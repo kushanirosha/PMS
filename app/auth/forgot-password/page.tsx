@@ -1,16 +1,17 @@
-'use client'
+'use client';
 
 import { Button, Input, Card } from '@heroui/react';
 import Image from 'next/image';
+import { handleForgotPassword } from '../../../services/auth';
 
-export default function ForgetPasswordPage() {
+export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-white">
       <div className="flex flex-col md:flex-row items-center max-w-5xl w-full mx-4">
         {/* Left Side - Illustration */}
         <div className="md:w-3/5 p-6">
           <Image
-            src="/images/forgot-password.png"
+            src="/auth/login.png"
             alt="Forgot Password Illustration"
             width={1000}
             height={1125}
@@ -25,10 +26,11 @@ export default function ForgetPasswordPage() {
             <span className="mr-2">⚠️</span> Please Enter your email to reset the password
           </p>
 
-          <form className="space-y-4">
+          <form action={handleForgotPassword} className="space-y-4">
             <div>
               <Input
                 id="email"
+                name="email"
                 label="email"
                 type="email"
                 placeholder="Enter your email"
@@ -45,7 +47,7 @@ export default function ForgetPasswordPage() {
 
             <p className="text-center text-sm text-gray-600 mt-4">
               If you haven’t account.{' '}
-              <a href="/login" className="text-green-600 hover:underline">
+              <a href="/auth/sign-up" className="text-green-600 hover:underline">
                 Create new account
               </a>
             </p>

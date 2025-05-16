@@ -1,19 +1,31 @@
-'use client'
+'use client';
 
 import { Button, Checkbox, Input, Card } from '@heroui/react';
 import Image from 'next/image';
+import { handleLogin } from '../../../services/auth';
+import { useState } from 'react';
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+
+  async function onSubmit(formData: FormData) {
+    try {
+      await handleLogin(formData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    }
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-l from-green-200 to-white">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-100 to-white">
       <div className="flex flex-col md:flex-row items-center max-w-5xl w-full mx-4">
         {/* Left Side - Illustration */}
-        <div className="md:w-4/8">
+        <div className="md:w-1/2 p-6">
           <Image
-            src="/images/login.png"
+            src="/login.png"
             alt="Property Management Illustration"
-            width={800}
-            height={900}
+            width={400}
+            height={300}
             className="w-full h-auto"
           />
         </div>
@@ -25,10 +37,13 @@ export default function LoginPage() {
             <span className="mr-2">🎉</span> Welcome back! Please login to your account.
           </p>
 
-          <form className="space-y-4">
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+
+          <form action={onSubmit} className="space-y-4">
             <div>
               <Input
                 id="email"
+                name="email"
                 label="email"
                 type="email"
                 placeholder="Enter your email"
@@ -39,6 +54,7 @@ export default function LoginPage() {
             <div>
               <Input
                 id="password"
+                name="password"
                 label="Password"
                 type="password"
                 placeholder="Enter your password"
@@ -60,12 +76,12 @@ export default function LoginPage() {
               type="submit"
               className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
             >
-              Sign Up
+              Sign In
             </Button>
 
             <p className="text-center text-sm text-gray-600 mt-4">
               If you haven’t account.{' '}
-              <a href="#" className="text-green-600 hover:underline">
+              <a href="/auth/create-account" className="text-green-600 hover:underline">
                 Create new account
               </a>
             </p>
